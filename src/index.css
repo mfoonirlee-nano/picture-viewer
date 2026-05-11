@@ -1,1 +1,188 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0b1326;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(173, 201, 235, 0.9);
+  outline-offset: 3px;
+}
+
+.app-background {
+  position: relative;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(64, 99, 156, 0.46), transparent 28rem),
+    radial-gradient(circle at 82% 18%, rgba(106, 78, 150, 0.32), transparent 30rem),
+    linear-gradient(135deg, #060e20 0%, #0b1326 45%, #111827 100%);
+}
+
+.app-background::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 78%);
+}
+
+.ambient-orb {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(72px);
+  opacity: 0.65;
+}
+
+.ambient-orb-a {
+  top: -120px;
+  left: -96px;
+  width: 320px;
+  height: 320px;
+  background: rgba(173, 201, 235, 0.28);
+}
+
+.ambient-orb-b {
+  right: -120px;
+  bottom: 14%;
+  width: 360px;
+  height: 360px;
+  background: rgba(255, 216, 231, 0.16);
+}
+
+.glass-panel,
+.glass-toolbar,
+.image-stage {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.glass-panel {
+  border-radius: 1.5rem;
+}
+
+.glass-toolbar {
+  border-radius: 1rem;
+}
+
+.image-stage {
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: rgba(6, 14, 32, 0.48);
+  padding: 24px;
+}
+
+.glass-primary-button,
+.glass-ghost-button,
+.glass-play-button,
+.glass-pause-button,
+.glass-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.glass-primary-button {
+  background: #ffffff;
+  color: #2f3131;
+}
+
+.glass-primary-button:hover:not(:disabled) {
+  background: #c6c6c7;
+  transform: translateY(-1px);
+}
+
+.glass-ghost-button,
+.glass-icon-button {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.glass-ghost-button:hover:not(:disabled),
+.glass-icon-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.glass-icon-button {
+  width: 48px;
+  padding: 0;
+}
+
+.glass-play-button {
+  background: #adc9eb;
+  color: #14324e;
+}
+
+.glass-play-button:hover:not(:disabled) {
+  background: #d0e4ff;
+  transform: translateY(-1px);
+}
+
+.glass-pause-button {
+  background: #ffb4ab;
+  color: #690005;
+}
+
+.glass-pause-button:hover:not(:disabled) {
+  background: #ffdad6;
+  transform: translateY(-1px);
+}
+
+.glass-primary-button:disabled,
+.glass-ghost-button:disabled,
+.glass-play-button:disabled,
+.glass-pause-button:disabled,
+.glass-icon-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+
+.glass-input-group {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0 16px;
+}
