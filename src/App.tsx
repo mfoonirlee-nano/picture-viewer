@@ -47,11 +47,13 @@ export default function App() {
   const [images, setImages] = useState<ImageItem[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isOverlayOpen, setIsOverlayOpen] = useState(true)
   const [interval, setIntervalTime] = useState(3000)
   const [fileName, setFileName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const stopPlaying = useCallback(() => {
     if (intervalRef.current) {
@@ -98,8 +100,46 @@ export default function App() {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
       }
+      if (overlayTimerRef.current) {
+        clearTimeout(overlayTimerRef.current)
+      }
     }
   }, [])
+
+  const scheduleOverlayClose = useCallback(() => {
+    if (overlayTimerRef.current) {
+      clearTimeout(overlayTimerRef.current)
+    }
+
+    overlayTimerRef.current = setTimeout(() => {
+      setIsOverlayOpen(false)
+    }, 3500)
+  }, [])
+
+  const openOverlay = useCallback(() => {
+    setIsOverlayOpen(true)
+    scheduleOverlayClose()
+  }, [scheduleOverlayClose])
+
+  useEffect(() => {
+    if (images.length === 0) return
+
+    setIsOverlayOpen(true)
+    scheduleOverlayClose()
+  }, [images.length, scheduleOverlayClose])
+
+  useEffect(() => {
+    if (images.length === 0) return
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.clientY <= 96 && event.clientX >= window.innerWidth - 420) {
+        openOverlay()
+      }
+    }
+
+    window.addEventListener('pointermove', handlePointerMove)
+    return () => window.removeEventListener('pointermove', handlePointerMove)
+  }, [images.length, openOverlay])
 
   useEffect(() => {
     if (isPlaying && images.length > 1) {
@@ -178,6 +218,7 @@ export default function App() {
       setImages(items)
       setCurrentIndex(0)
       setFileName(dirHandle.name)
+      setIsOverlayOpen(true)
       stopPlaying()
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
@@ -227,116 +268,122 @@ export default function App() {
   }
 
   return (
-    <main className="app-background flex h-screen flex-col overflow-hidden text-on-background">
-      <div className="ambient-orb ambient-orb-a" />
-      <div className="ambient-orb ambient-orb-b" />
+    <main className="viewer-shell h-screen overflow-hidden text-on-background">
+      <section className="viewer-stage" aria-label="图片浏览区">
+        <img
+          src={currentImage.url}
+          alt={currentImage.name}
+          className="viewer-image"
+          draggable={false}
+        />
+      </section>
 
-      <header className="relative z-20 px-4 pt-4 sm:px-6 sm:pt-6">
-        <div className="glass-toolbar flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <aside
+        className={`floating-info-panel ${isOverlayOpen ? 'is-open' : 'is-collapsed'}`}
+        onPointerEnter={() => {
+          if (overlayTimerRef.current) {
+            clearTimeout(overlayTimerRef.current)
+          }
+          setIsOverlayOpen(true)
+        }}
+        onPointerLeave={scheduleOverlayClose}
+        onFocus={openOverlay}
+      >
+        <div className="floating-panel-handle" aria-hidden="true" />
+
+        <div className="compact-panel-content">
           <div className="min-w-0">
-            <p className="text-label-sm uppercase text-on-surface-variant">当前目录</p>
-            <div className="mt-1 flex min-w-0 items-center gap-3">
-              <span className="truncate text-headline-md text-primary">{fileName}</span>
-              <span className="shrink-0 rounded-full bg-white/10 px-3 py-1 text-label-sm text-on-surface-variant">
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="truncate text-body-md font-medium text-primary">{fileName}</span>
+              <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[11px] leading-4 text-on-surface-variant">
                 {images.length} 张
               </span>
             </div>
+            <p className="mt-0.5 truncate text-xs text-on-surface-variant">{currentImage.name}</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-          <button
-            onClick={handleSelectDirectory}
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs text-on-surface-variant">
+              {currentIndex + 1}/{images.length}
+            </span>
+            <button
+              onClick={handleSelectDirectory}
               disabled={isLoading}
               className="glass-ghost-button"
-          >
+              aria-label="更换目录"
+              title="更换目录"
+            >
               <Icon name="folder" />
-            更换目录
-          </button>
-
-            <div className="glass-input-group">
-              <label htmlFor="interval" className="text-label-sm uppercase text-on-surface-variant">间隔</label>
-            <input
-                id="interval"
-              type="number"
-              min={500}
-              max={30000}
-              step={500}
-              value={interval}
-              onChange={(e) => {
-                const val = parseInt(e.target.value) || 3000
-                setIntervalTime(val)
-                if (isPlaying) {
-                  stopPlaying()
-                  setTimeout(() => {
-                    setIsPlaying(true)
-                  }, 0)
-                }
-              }}
-                className="w-20 bg-transparent text-center text-body-md text-primary outline-none"
-            />
-              <span className="text-label-sm text-on-surface-variant">ms</span>
+            </button>
           </div>
 
+          <div className="compact-control-row">
+            <div className="glass-input-group">
+              <input
+                id="interval"
+                aria-label="播放间隔，毫秒"
+                title="播放间隔"
+                type="number"
+                min={500}
+                max={30000}
+                step={500}
+                value={interval}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value) || 3000
+                  setIntervalTime(val)
+                  if (isPlaying) {
+                    stopPlaying()
+                    setTimeout(() => {
+                      setIsPlaying(true)
+                    }, 0)
+                  }
+                }}
+                className="w-14 bg-transparent text-center text-sm text-primary outline-none"
+              />
+              <span className="text-[11px] text-on-surface-variant">ms</span>
+            </div>
+
             <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrev}
-              disabled={currentIndex === 0}
+              <button
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
                 className="glass-icon-button"
                 aria-label="上一张"
                 title="上一张"
-            >
+              >
                 <Icon name="previous" />
-            </button>
+              </button>
 
-            <button
-              onClick={togglePlay}
+              <button
+                onClick={togglePlay}
                 disabled={images.length <= 1}
                 className={isPlaying ? 'glass-pause-button' : 'glass-play-button'}
-            >
+                aria-label={isPlaying ? '暂停' : '播放'}
+                title={isPlaying ? '暂停' : '播放'}
+              >
                 <Icon name={isPlaying ? 'pause' : 'play'} />
-              {isPlaying ? '暂停' : '播放'}
-            </button>
+              </button>
 
-            <button
-              onClick={handleNext}
-              disabled={currentIndex === images.length - 1}
+              <button
+                onClick={handleNext}
+                disabled={currentIndex === images.length - 1}
                 className="glass-icon-button"
                 aria-label="下一张"
                 title="下一张"
-            >
+              >
                 <Icon name="next" />
-            </button>
-          </div>
+              </button>
+            </div>
 
-            <span className="rounded-full bg-white/10 px-4 py-2 text-label-sm text-on-surface-variant">
-            {currentIndex + 1} / {images.length}
-          </span>
+            <div className="compact-progress">
+              <div
+                className="h-full rounded-full bg-secondary transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         </div>
-      </header>
-
-      <section className="relative z-10 flex min-h-0 flex-1 items-center justify-center px-4 py-4 sm:px-6">
-        <div className="image-stage flex h-full w-full items-center justify-center">
-        <img
-            src={currentImage.url}
-            alt={currentImage.name}
-            className="max-h-full max-w-full rounded-lg object-contain shadow-[0_18px_80px_rgba(0,0,0,0.35)]"
-          draggable={false}
-        />
-      </div>
-      </section>
-
-      <footer className="relative z-20 px-4 pb-4 sm:px-6 sm:pb-6">
-        <div className="glass-toolbar flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="min-w-0 truncate text-body-md text-on-surface-variant">{currentImage.name}</p>
-          <div className="h-1 w-full overflow-hidden rounded-full bg-white/5 sm:w-72">
-        <div
-              className="h-full rounded-full bg-secondary transition-all duration-300"
-              style={{ width: `${progress}%` }}
-        />
-      </div>
-        </div>
-      </footer>
+      </aside>
     </main>
   )
 }
