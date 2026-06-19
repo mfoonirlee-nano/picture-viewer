@@ -68,10 +68,9 @@ body {
 .image-stage {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 72px 16px 96px;
+  display: grid;
+  place-items: center;
+  padding: 0;
   background:
     linear-gradient(45deg, #111 25%, transparent 25%),
     linear-gradient(-45deg, #111 25%, transparent 25%),
@@ -84,9 +83,10 @@ body {
 
 .viewer-image {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 100dvw;
+  height: 100dvh;
   object-fit: contain;
+  object-position: center;
   user-select: none;
 }
 
@@ -378,10 +378,6 @@ body {
 }
 
 @media (max-width: 720px) {
-  .image-stage {
-    padding: 60px 8px 128px;
-  }
-
   .top-overlay {
     top: 8px;
     right: 8px;
