@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, type ReactElement } from 'react'
+import { useState, useRef, useEffect, useCallback, type ReactElement, type ReactNode } from 'react'
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg']
 
@@ -7,10 +7,18 @@ type ImageItem = {
   url: string
 }
 
-type IconName = 'folder' | 'image' | 'play' | 'pause' | 'previous' | 'next'
+type IconName = 'x' | 'folder' | 'image' | 'play' | 'pause' | 'previous' | 'next' | 'home' | 'timer' | 'gallery'
 
-function Icon({ name, className = 'h-4 w-4' }: { name: IconName; className?: string }) {
-  const paths: Record<IconName, ReactElement> = {
+function Icon({ name, className = 'icon' }: { name: IconName; className?: string }) {
+  if (name === 'x') {
+    return (
+      <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    )
+  }
+
+  const paths: Record<Exclude<IconName, 'x'>, ReactElement> = {
     folder: (
       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75A2.25 2.25 0 016 4.5h3l1.5 1.5H18A2.25 2.25 0 0120.25 8.25v7.5A2.25 2.25 0 0118 18H6a2.25 2.25 0 01-2.25-2.25v-9z" />
     ),
@@ -21,6 +29,9 @@ function Icon({ name, className = 'h-4 w-4' }: { name: IconName; className?: str
     pause: <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 5.25v13.5M15.75 5.25v13.5" />,
     previous: <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />,
     next: <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />,
+    home: <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 11.25L12 4.5l7.5 6.75v8.25a1.5 1.5 0 01-1.5 1.5h-3.75v-5.25h-4.5V21H6a1.5 1.5 0 01-1.5-1.5v-8.25z" />,
+    timer: <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75V12l3 2.25M9 3.75h6M12 21a7.5 7.5 0 100-15 7.5 7.5 0 000 15z" />,
+    gallery: <path strokeLinecap="round" strokeLinejoin="round" d="M6 5.25h10.5A2.25 2.25 0 0118.75 7.5V18M3.75 8.25h10.5a2.25 2.25 0 012.25 2.25v6A2.25 2.25 0 0114.25 18.75H3.75V8.25z" />,
   }
 
   return (
@@ -43,17 +54,67 @@ async function* getFiles(dirHandle: FileSystemDirectoryHandle): AsyncGenerator<F
   }
 }
 
+function formatInterval(ms: number) {
+  return ms >= 1000 && ms % 1000 === 0 ? `${ms / 1000}s` : `${ms}ms`
+}
+
+function AppShell({
+  children,
+  rightRail,
+  onSelectDirectory,
+  isLoading,
+  hasImages,
+}: {
+  children: ReactNode
+  rightRail: ReactNode
+  onSelectDirectory: () => void
+  isLoading: boolean
+  hasImages: boolean
+}) {
+  return (
+    <main className="x-app-shell">
+      <aside className="x-sidebar" aria-label="应用导航">
+        <div className="x-logo" aria-label="X 风格图片浏览器">
+          <Icon name="x" />
+        </div>
+
+        <nav className="x-nav" aria-label="当前视图">
+          <div className="x-nav-item is-active" aria-current="page">
+            <Icon name="home" />
+            <span>浏览</span>
+          </div>
+          <div className="x-nav-item">
+            <Icon name="gallery" />
+            <span>{hasImages ? '已载入' : '空目录'}</span>
+          </div>
+        </nav>
+
+        <button onClick={onSelectDirectory} disabled={isLoading} className="x-post-button">
+          <Icon name="folder" />
+          <span>{isLoading ? '读取中' : '目录'}</span>
+        </button>
+      </aside>
+
+      <section className="x-main-column">
+        {children}
+      </section>
+
+      <aside className="x-right-rail" aria-label="图片控制">
+        {rightRail}
+      </aside>
+    </main>
+  )
+}
+
 export default function App() {
   const [images, setImages] = useState<ImageItem[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isOverlayOpen, setIsOverlayOpen] = useState(true)
   const [interval, setIntervalTime] = useState(3000)
   const [fileName, setFileName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const stopPlaying = useCallback(() => {
     if (intervalRef.current) {
@@ -100,46 +161,8 @@ export default function App() {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
       }
-      if (overlayTimerRef.current) {
-        clearTimeout(overlayTimerRef.current)
-      }
     }
   }, [])
-
-  const scheduleOverlayClose = useCallback(() => {
-    if (overlayTimerRef.current) {
-      clearTimeout(overlayTimerRef.current)
-    }
-
-    overlayTimerRef.current = setTimeout(() => {
-      setIsOverlayOpen(false)
-    }, 3500)
-  }, [])
-
-  const openOverlay = useCallback(() => {
-    setIsOverlayOpen(true)
-    scheduleOverlayClose()
-  }, [scheduleOverlayClose])
-
-  useEffect(() => {
-    if (images.length === 0) return
-
-    setIsOverlayOpen(true)
-    scheduleOverlayClose()
-  }, [images.length, scheduleOverlayClose])
-
-  useEffect(() => {
-    if (images.length === 0) return
-
-    const handlePointerMove = (event: PointerEvent) => {
-      if (event.clientY <= 96 && event.clientX >= window.innerWidth - 420) {
-        openOverlay()
-      }
-    }
-
-    window.addEventListener('pointermove', handlePointerMove)
-    return () => window.removeEventListener('pointermove', handlePointerMove)
-  }, [images.length, openOverlay])
 
   useEffect(() => {
     if (isPlaying && images.length > 1) {
@@ -218,7 +241,6 @@ export default function App() {
       setImages(items)
       setCurrentIndex(0)
       setFileName(dirHandle.name)
-      setIsOverlayOpen(true)
       stopPlaying()
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
@@ -231,98 +253,133 @@ export default function App() {
 
   const currentImage = images[currentIndex]
   const progress = images.length > 1 ? ((currentIndex + 1) / images.length) * 100 : 100
+  const hasImages = images.length > 0
 
-  if (images.length === 0) {
+  const playbackControls = (
+    <div className="control-cluster" aria-label="播放控制">
+      <button
+        onClick={handlePrev}
+        disabled={currentIndex === 0}
+        className="x-icon-button"
+        aria-label="上一张"
+        title="上一张"
+      >
+        <Icon name="previous" />
+      </button>
+
+      <button
+        onClick={togglePlay}
+        disabled={images.length <= 1}
+        className="x-play-button"
+        aria-label={isPlaying ? '暂停' : '播放'}
+        title={isPlaying ? '暂停' : '播放'}
+      >
+        <Icon name={isPlaying ? 'pause' : 'play'} />
+        <span>{isPlaying ? '暂停' : '播放'}</span>
+      </button>
+
+      <button
+        onClick={handleNext}
+        disabled={currentIndex === images.length - 1}
+        className="x-icon-button"
+        aria-label="下一张"
+        title="下一张"
+      >
+        <Icon name="next" />
+      </button>
+    </div>
+  )
+
+  if (!hasImages) {
     return (
-      <main className="app-background min-h-screen overflow-hidden text-on-background">
-        <div className="ambient-orb ambient-orb-a" />
-        <div className="ambient-orb ambient-orb-b" />
+      <AppShell
+        rightRail={
+          <>
+            <section className="rail-panel">
+              <p className="rail-eyebrow">状态</p>
+              <h2>未选择目录</h2>
+              <button onClick={handleSelectDirectory} disabled={isLoading} className="x-primary-button">
+                <Icon name="folder" />
+                {isLoading ? '读取中' : '选择目录'}
+              </button>
+            </section>
+            <section className="rail-panel">
+              <p className="rail-eyebrow">格式</p>
+              <p className="rail-copy">jpg / png / gif / bmp / webp / svg</p>
+            </section>
+          </>
+        }
+        onSelectDirectory={handleSelectDirectory}
+        isLoading={isLoading}
+        hasImages={false}
+      >
+        <header className="timeline-header">
+          <div>
+            <h1>图片浏览器</h1>
+            <p>本地目录</p>
+          </div>
+          <button onClick={handleSelectDirectory} disabled={isLoading} className="x-primary-button mobile-hidden">
+            <Icon name="folder" />
+            {isLoading ? '读取中' : '选择目录'}
+          </button>
+        </header>
 
-        <section className="relative z-10 flex min-h-screen items-center justify-center px-6 py-10">
-          <div className="glass-panel w-full max-w-xl px-8 py-10 text-center sm:px-12">
-            <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center rounded-full border border-white/15 bg-white/10 text-secondary shadow-[0_8px_32px_rgba(0,0,0,0.16)]">
-              <Icon name="image" className="h-12 w-12" />
-            </div>
-            <p className="mb-3 text-label-sm uppercase text-on-surface-variant">Picture Viewer</p>
-            <h1 className="mb-4 text-headline-lg text-primary">图片浏览器</h1>
-            <p className="mx-auto mb-8 max-w-sm text-body-md text-on-surface-variant">
-              选择一个包含图片的目录，以玻璃拟态视图浏览并播放本地图片。
-            </p>
-            <button
-              onClick={handleSelectDirectory}
-              disabled={isLoading}
-              className="glass-primary-button mx-auto"
-            >
+        <article className="composer-cell">
+          <div className="post-avatar">
+            <Icon name="x" />
+          </div>
+          <div className="composer-body">
+            <p className="composer-title">选择图片目录</p>
+            <button onClick={handleSelectDirectory} disabled={isLoading} className="x-primary-button">
               <Icon name="folder" />
               {isLoading ? '读取中' : '选择目录'}
             </button>
-            {error && (
-              <p className="mt-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-body-md text-error">
-                {error}
-              </p>
-            )}
+            {error && <p className="inline-error">{error}</p>}
           </div>
-        </section>
-      </main>
+        </article>
+
+        <article className="empty-post">
+          <header className="post-author">
+            <div className="post-avatar muted">
+              <Icon name="image" />
+            </div>
+            <div>
+              <strong>Picture Viewer</strong>
+              <span>@local</span>
+            </div>
+            <Icon name="x" className="post-brand" />
+          </header>
+          <p>未载入图片。</p>
+        </article>
+      </AppShell>
     )
   }
 
   return (
-    <main className="viewer-shell h-screen overflow-hidden text-on-background">
-      <section className="viewer-stage" aria-label="图片浏览区">
-        <img
-          src={currentImage.url}
-          alt={currentImage.name}
-          className="viewer-image"
-          draggable={false}
-        />
-      </section>
-
-      <aside
-        className={`floating-info-panel ${isOverlayOpen ? 'is-open' : 'is-collapsed'}`}
-        onPointerEnter={() => {
-          if (overlayTimerRef.current) {
-            clearTimeout(overlayTimerRef.current)
-          }
-          setIsOverlayOpen(true)
-        }}
-        onPointerLeave={scheduleOverlayClose}
-        onFocus={openOverlay}
-      >
-        <div className="floating-panel-handle" aria-hidden="true" />
-
-        <div className="compact-panel-content">
-          <div className="min-w-0">
-            <div className="flex min-w-0 items-center gap-2">
-              <span className="truncate text-body-md font-medium text-primary">{fileName}</span>
-              <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[11px] leading-4 text-on-surface-variant">
-                {images.length} 张
-              </span>
-            </div>
-            <p className="mt-0.5 truncate text-xs text-on-surface-variant">{currentImage.name}</p>
-          </div>
-
-          <div className="flex shrink-0 items-center gap-2">
-            <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs text-on-surface-variant">
-              {currentIndex + 1}/{images.length}
-            </span>
-            <button
-              onClick={handleSelectDirectory}
-              disabled={isLoading}
-              className="glass-ghost-button"
-              aria-label="更换目录"
-              title="更换目录"
-            >
+    <AppShell
+      rightRail={
+        <>
+          <section className="rail-panel">
+            <p className="rail-eyebrow">目录</p>
+            <h2>{fileName}</h2>
+            <p className="rail-copy">{images.length} 张图片</p>
+            <button onClick={handleSelectDirectory} disabled={isLoading} className="x-secondary-button">
               <Icon name="folder" />
+              {isLoading ? '读取中' : '更换目录'}
             </button>
-          </div>
+          </section>
 
-          <div className="compact-control-row">
-            <div className="glass-input-group">
+          <section className="rail-panel">
+            <p className="rail-eyebrow">播放</p>
+            {playbackControls}
+            <label className="interval-field" htmlFor="interval">
+              <span>
+                <Icon name="timer" />
+                间隔
+              </span>
               <input
                 id="interval"
                 aria-label="播放间隔，毫秒"
-                title="播放间隔"
                 type="number"
                 min={500}
                 max={30000}
@@ -338,52 +395,67 @@ export default function App() {
                     }, 0)
                   }
                 }}
-                className="w-14 bg-transparent text-center text-sm text-primary outline-none"
               />
-              <span className="text-[11px] text-on-surface-variant">ms</span>
-            </div>
+              <em>ms</em>
+            </label>
+          </section>
 
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePrev}
-                disabled={currentIndex === 0}
-                className="glass-icon-button"
-                aria-label="上一张"
-                title="上一张"
-              >
-                <Icon name="previous" />
-              </button>
-
-              <button
-                onClick={togglePlay}
-                disabled={images.length <= 1}
-                className={isPlaying ? 'glass-pause-button' : 'glass-play-button'}
-                aria-label={isPlaying ? '暂停' : '播放'}
-                title={isPlaying ? '暂停' : '播放'}
-              >
-                <Icon name={isPlaying ? 'pause' : 'play'} />
-              </button>
-
-              <button
-                onClick={handleNext}
-                disabled={currentIndex === images.length - 1}
-                className="glass-icon-button"
-                aria-label="下一张"
-                title="下一张"
-              >
-                <Icon name="next" />
-              </button>
-            </div>
-
-            <div className="compact-progress">
-              <div
-                className="h-full rounded-full bg-secondary transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
+          <section className="rail-panel">
+            <p className="rail-eyebrow">当前位置</p>
+            <h2>{currentIndex + 1}/{images.length}</h2>
+            <p className="rail-copy">{currentImage.name}</p>
+          </section>
+        </>
+      }
+      onSelectDirectory={handleSelectDirectory}
+      isLoading={isLoading}
+      hasImages
+    >
+      <header className="timeline-header">
+        <div className="min-width-zero">
+          <h1>{fileName}</h1>
+          <p>{currentIndex + 1} / {images.length}</p>
         </div>
-      </aside>
-    </main>
+        <button onClick={handleSelectDirectory} disabled={isLoading} className="x-secondary-button mobile-hidden">
+          <Icon name="folder" />
+          更换目录
+        </button>
+      </header>
+
+      <article className="viewer-post">
+        <header className="post-author viewer-author">
+          <div className="post-avatar">
+            <Icon name="image" />
+          </div>
+          <div className="min-width-zero">
+            <strong>{fileName}</strong>
+            <span className="truncate-text">{currentImage.name}</span>
+          </div>
+          <Icon name="x" className="post-brand" />
+        </header>
+
+        <section className="viewer-frame" aria-label="图片浏览区">
+          <img
+            src={currentImage.url}
+            alt={currentImage.name}
+            className="viewer-image"
+            draggable={false}
+          />
+        </section>
+
+        <footer className="viewer-footer">
+          <span>{formatInterval(interval)}</span>
+          <span>{isPlaying ? '播放中' : '已暂停'}</span>
+        </footer>
+
+        <div className="progress-track" aria-hidden="true">
+          <div className="progress-value" style={{ width: `${progress}%` }} />
+        </div>
+
+        <div className="mobile-controls">
+          {playbackControls}
+        </div>
+      </article>
+    </AppShell>
   )
 }

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "brand-to-design-md": {
+      "source": "shaom/brand-to-design-md-skill",
+      "sourceType": "github",
+      "skillPath": "skills/brand-to-design-md/SKILL.md",
+      "computedHash": "d7c4570be54bca399c7dfb2fcd9e61ea65b4be38267212652d456b788b33ef60"
+    }
+  }
+}
