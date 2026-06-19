@@ -1,29 +1,20 @@
 import { useState, useRef, useEffect, useCallback, type ReactElement } from 'react'
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg']
+const DEFAULT_INTERVAL = 2000
+const HIDE_CHROME_AFTER = 3000
 
 type ImageItem = {
   name: string
   url: string
 }
 
-type IconName = 'vercel' | 'folder' | 'image' | 'play' | 'pause' | 'previous' | 'next' | 'timer'
+type IconName = 'folder' | 'play' | 'pause' | 'previous' | 'next' | 'timer'
 
 function Icon({ name, className = 'icon' }: { name: IconName; className?: string }) {
-  if (name === 'vercel') {
-    return (
-      <svg className={className} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 4 22 21H2L12 4z" />
-      </svg>
-    )
-  }
-
-  const paths: Record<Exclude<IconName, 'vercel'>, ReactElement> = {
+  const paths: Record<IconName, ReactElement> = {
     folder: (
       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75A2.25 2.25 0 016 4.5h3l1.5 1.5H18A2.25 2.25 0 0120.25 8.25v7.5A2.25 2.25 0 0118 18H6a2.25 2.25 0 01-2.25-2.25v-9z" />
-    ),
-    image: (
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 6.75A2.25 2.25 0 016.75 4.5h10.5a2.25 2.25 0 012.25 2.25v10.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 17.25V6.75zm3.75 8.25l2.25-2.25a1.5 1.5 0 012.12 0l1.13 1.13 1.5-1.5a1.5 1.5 0 012.12 0l2.13 2.12M8.25 8.25h.01" />
     ),
     play: <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 5.25v13.5l10.5-6.75-10.5-6.75z" />,
     pause: <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 5.25v13.5M15.75 5.25v13.5" />,
@@ -52,19 +43,39 @@ async function* getFiles(dirHandle: FileSystemDirectoryHandle): AsyncGenerator<F
   }
 }
 
-function formatInterval(ms: number) {
-  return ms >= 1000 && ms % 1000 === 0 ? `${ms / 1000}s` : `${ms}ms`
-}
-
 export default function App() {
   const [images, setImages] = useState<ImageItem[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [interval, setIntervalTime] = useState(3000)
-  const [fileName, setFileName] = useState('')
+  const [interval, setIntervalTime] = useState(DEFAULT_INTERVAL)
+  const [isChromeVisible, setIsChromeVisible] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const chromeHideRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hasImages = images.length > 0
+
+  const clearChromeTimer = useCallback(() => {
+    if (chromeHideRef.current) {
+      clearTimeout(chromeHideRef.current)
+      chromeHideRef.current = null
+    }
+  }, [])
+
+  const scheduleChromeHide = useCallback(() => {
+    clearChromeTimer()
+    if (!hasImages) return
+
+    chromeHideRef.current = setTimeout(() => {
+      setIsChromeVisible(false)
+    }, HIDE_CHROME_AFTER)
+  }, [clearChromeTimer, hasImages])
+
+  const revealChrome = useCallback(() => {
+    if (!hasImages) return
+    setIsChromeVisible(true)
+    scheduleChromeHide()
+  }, [hasImages, scheduleChromeHide])
 
   const stopPlaying = useCallback(() => {
     if (intervalRef.current) {
@@ -111,8 +122,22 @@ export default function App() {
       if (intervalRef.current) {
         clearInterval(intervalRef.current)
       }
+      clearChromeTimer()
     }
-  }, [])
+  }, [clearChromeTimer])
+
+  useEffect(() => {
+    if (!hasImages) {
+      clearChromeTimer()
+      setIsChromeVisible(true)
+      return
+    }
+
+    setIsChromeVisible(true)
+    scheduleChromeHide()
+
+    return clearChromeTimer
+  }, [clearChromeTimer, hasImages, scheduleChromeHide])
 
   useEffect(() => {
     if (isPlaying && images.length > 1) {
@@ -128,6 +153,8 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      revealChrome()
+
       if (event.target instanceof HTMLInputElement) return
 
       if (event.key === 'ArrowLeft') {
@@ -148,7 +175,24 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleNext, handlePrev, togglePlay])
+  }, [handleNext, handlePrev, revealChrome, togglePlay])
+
+  useEffect(() => {
+    if (!hasImages) return
+
+    const handleActivity = () => revealChrome()
+    const events = ['pointermove', 'pointerdown', 'wheel', 'touchstart']
+
+    events.forEach(event => {
+      window.addEventListener(event, handleActivity, { passive: true })
+    })
+
+    return () => {
+      events.forEach(event => {
+        window.removeEventListener(event, handleActivity)
+      })
+    }
+  }, [hasImages, revealChrome])
 
   const handleSelectDirectory = async () => {
     if (!('showDirectoryPicker' in window)) {
@@ -172,7 +216,6 @@ export default function App() {
       if (fileHandles.length === 0) {
         setImages([])
         setCurrentIndex(0)
-        setFileName(dirHandle.name)
         setError('这个目录里没有可浏览的图片。支持 jpg、png、gif、bmp、webp 和 svg。')
         stopPlaying()
         return
@@ -190,7 +233,6 @@ export default function App() {
 
       setImages(items)
       setCurrentIndex(0)
-      setFileName(dirHandle.name)
       stopPlaying()
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
@@ -201,7 +243,6 @@ export default function App() {
     }
   }
 
-  const hasImages = images.length > 0
   const currentImage = images[currentIndex]
   const progress = images.length > 1 ? ((currentIndex + 1) / images.length) * 100 : 100
 
@@ -225,7 +266,7 @@ export default function App() {
         title={isPlaying ? '暂停播放' : '播放幻灯片'}
       >
         <Icon name={isPlaying ? 'pause' : 'play'} />
-        <span>{isPlaying ? '暂停' : '播放'}</span>
+        <span className="sr-only">{isPlaying ? '暂停' : '播放'}</span>
       </button>
 
       <button
@@ -252,7 +293,7 @@ export default function App() {
         step={500}
         value={interval}
         onChange={(e) => {
-          const val = parseInt(e.target.value) || 3000
+          const val = parseInt(e.target.value) || DEFAULT_INTERVAL
           setIntervalTime(val)
           if (isPlaying) {
             stopPlaying()
@@ -270,12 +311,7 @@ export default function App() {
     return (
       <main className="viewer-root empty-root">
         <section className="empty-panel">
-          <span className="brand-mark" aria-hidden="true">
-            <Icon name="vercel" />
-          </span>
-          <Icon name="image" className="empty-image-icon" />
           <h1>图片浏览器</h1>
-          <p>选择一个本地目录开始浏览。</p>
           <button onClick={handleSelectDirectory} disabled={isLoading} className="primary-button">
             <Icon name="folder" />
             {isLoading ? '读取中' : '选择目录'}
@@ -288,7 +324,10 @@ export default function App() {
   }
 
   return (
-    <main className="viewer-root image-root">
+    <main
+      className={isChromeVisible ? 'viewer-root image-root' : 'viewer-root image-root chrome-hidden'}
+      onFocusCapture={revealChrome}
+    >
       <section className="image-stage" aria-label="图片浏览区">
         <img
           src={currentImage.url}
@@ -305,7 +344,7 @@ export default function App() {
         </div>
         <button onClick={handleSelectDirectory} disabled={isLoading} className="ghost-button">
           <Icon name="folder" />
-          <span>{isLoading ? '读取中' : '更换目录'}</span>
+          <span className="sr-only">{isLoading ? '读取中' : '更换目录'}</span>
         </button>
       </header>
 
@@ -315,9 +354,6 @@ export default function App() {
 
       <footer className="bottom-overlay">
         {playbackControls}
-        <span className={isPlaying ? 'state-badge active' : 'state-badge'}>
-          {isPlaying ? '播放中' : '已暂停'} · {formatInterval(interval)}
-        </span>
         {intervalControl}
       </footer>
     </main>
