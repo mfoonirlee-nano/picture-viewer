@@ -1,64 +1,110 @@
 # Picture Viewer
 
-本地图片浏览器 — 基于 `DESIGN.md` 的 X 风格界面重构，提供本地图片查看与幻灯片播放。
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+[![React](https://img.shields.io/badge/React-19-149eca.svg)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178c6.svg)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-8-646cff.svg)](https://vite.dev/)
 
-## 功能特性
+Picture Viewer is a privacy-first local image viewer and slideshow web app for browsing image folders directly in the browser. It uses the File System Access API, so photos stay on your device and are never uploaded to a server.
 
-- **本地目录浏览** — 通过浏览器 File System Access API 选择本地文件夹，图片不会上传至任何服务器
-- **递归扫描** — 自动遍历子目录，筛选常见图片格式（jpg、jpeg、png、gif、bmp、webp、svg）
-- **自然排序** — 文件名按自然顺序排列（数字部分按数值排序）
-- **全屏显示** — 图片以 `object-fit: contain` 居中展示，不裁切不变形
-- **幻灯片播放** — 支持自动轮播，播放间隔 500ms ~ 30,000ms 可调，默认 3 秒，播完自动停止
-- **手动导航** — 上一张 / 下一张按钮，支持键盘快捷键（← → 切换，空格键 播放/暂停）
-- **X 风格控制区** — 桌面端使用左侧应用栏、中央图片时间线、右侧控制栏；窄屏自动收敛为单列布局
-- **进度指示** — 底部进度条显示当前浏览位置
-- **响应式布局** — 适配桌面、平板和移动端宽度
+本项目是一个本地优先的图片浏览器，用于在浏览器中递归浏览本地图片目录、全屏查看图片并播放幻灯片。图片只在本机读取，不上传到任何服务器。
 
-## 技术栈
+## Why Use It
 
-- **React 19** + **TypeScript**
-- **Vite 8** 构建
-- **Tailwind CSS 4** 样式
-- **DESIGN.md** 驱动的 X 风格设计系统（黑白品牌基础、Chirp/system 字体、胶囊按钮、时间线分隔）
+- Browse local photo folders without importing, uploading, or creating an account.
+- Recursively scan subfolders for common image formats.
+- Run a private offline slideshow from a local directory.
+- View images full screen with `object-fit: contain`, so images are not cropped or distorted.
+- Use a responsive React interface that works well on desktop, tablet, and narrow screens.
 
-## 快速开始
+## Features
+
+- Local folder picker powered by the browser File System Access API.
+- Recursive image discovery for `jpg`, `jpeg`, `png`, `gif`, `bmp`, `webp`, and `svg`.
+- Natural filename sorting, including numeric filename segments.
+- Manual previous and next navigation with keyboard shortcuts.
+- Slideshow playback with an adjustable interval from 500 ms to 30,000 ms.
+- Auto-hiding controls for distraction-free viewing.
+- Bottom progress indicator for the current folder position.
+- X-inspired black and white interface driven by `DESIGN.md`.
+
+## Tech Stack
+
+- React 19
+- TypeScript
+- Vite 8
+- Tailwind CSS 4
+- File System Access API
+
+## Quick Start
 
 ```bash
-# 安装依赖
 npm install
-
-# 启动开发服务器
 npm run dev
+```
 
-# 生产构建
+Build and preview the production bundle:
+
+```bash
 npm run build
-
-# 预览生产构建
 npm run preview
 ```
 
-## 项目结构
+## Browser Support
 
-```
+Picture Viewer requires a browser that supports the File System Access API. Chrome and Edge are recommended.
+
+MDN reference: [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API)
+
+## Keyboard Shortcuts
+
+| Key | Action |
+| --- | --- |
+| Left Arrow | Previous image |
+| Right Arrow | Next image |
+| Space | Play or pause slideshow |
+
+## Project Structure
+
+```text
 src/
-  App.tsx        # 主应用组件（图片浏览、幻灯片、交互逻辑）
-  index.css      # 全局样式 & X 风格组件类
-  main.tsx       # React 入口
-DESIGN.md        # 设计系统规范
+  App.tsx        # Image browsing, slideshow, and interaction logic
+  index.css      # Global styles and viewer UI classes
+  main.tsx       # React entry point
+DESIGN.md        # Visual design notes
 ```
 
-## 浏览器要求
+## GitHub Discovery Setup
 
-需要支持 [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_Access_API) 的浏览器，推荐 **Chrome** 或 **Edge**。
+Use this repository description in the GitHub About panel:
 
-## 键盘快捷键
+```text
+Privacy-first local image viewer and slideshow web app built with React, TypeScript, Vite, and the File System Access API.
+```
 
-| 按键 | 功能 |
-|------|------|
-| ← | 上一张 |
-| → | 下一张 |
-| 空格 | 播放 / 暂停 |
+Recommended GitHub topics:
+
+```text
+picture-viewer
+image-viewer
+photo-viewer
+local-image-viewer
+slideshow
+file-system-access-api
+offline-first
+privacy-first
+local-first
+react
+typescript
+vite
+```
+
+Useful search keywords for this project:
+
+```text
+local image viewer, browser photo viewer, offline slideshow, recursive image browser, privacy-first photo viewer, File System Access API React app
+```
 
 ## License
 
-Apache-2.0
+Apache-2.0. See [LICENSE](LICENSE).

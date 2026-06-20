@@ -1,7 +1,31 @@
 {
   "name": "picture-viewer",
   "version": "1.0.0",
+  "description": "A privacy-first local image viewer and slideshow web app built with React, TypeScript, Vite, and the File System Access API.",
+  "license": "Apache-2.0",
   "type": "module",
+  "keywords": [
+    "picture-viewer",
+    "image-viewer",
+    "photo-viewer",
+    "local-image-viewer",
+    "slideshow",
+    "file-system-access-api",
+    "offline-first",
+    "privacy-first",
+    "local-first",
+    "react",
+    "typescript",
+    "vite"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfoonirlee-nano/picture-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mfoonirlee-nano/picture-viewer/issues"
+  },
+  "homepage": "https://github.com/mfoonirlee-nano/picture-viewer#readme",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
