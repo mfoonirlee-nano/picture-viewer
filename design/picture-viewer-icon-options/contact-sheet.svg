@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1208" height="716" viewBox="0 0 1208 716">
+  <rect width="1208" height="716" fill="#ffffff"/>
+  
+      <g>
+        <rect x="36" y="36" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-01"><rect x="52" y="52" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-01.png" x="52" y="52" width="228" height="228" clip-path="url(#mask-option-01)"/>
+        <g><rect x="146.5" y="306" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="157.5" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="157.5" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="146.5" y="337.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="141" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="141" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="186.1" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="186.1" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="328" y="36" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-02"><rect x="344" y="52" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-02.png" x="344" y="52" width="228" height="228" clip-path="url(#mask-option-02)"/>
+        <g><rect x="438.5" y="306" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="449.5" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="449.5" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="438.5" y="337.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="433" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="433" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="467.1" y="306" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="478.1" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="467.1" y="321.95" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="461.6" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="467.1" y="337.9" width="11" height="5.5" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="620" y="36" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-03"><rect x="636" y="52" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-03.png" x="636" y="52" width="228" height="228" clip-path="url(#mask-option-03)"/>
+        <g><rect x="730.5" y="306" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="741.5" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="741.5" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="730.5" y="337.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="725" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="725" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="759.1" y="306" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="770.1" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="759.1" y="321.95" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="770.1" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="759.1" y="337.9" width="11" height="5.5" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="912" y="36" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-04"><rect x="928" y="52" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-04.png" x="928" y="52" width="228" height="228" clip-path="url(#mask-option-04)"/>
+        <g><rect x="1022.5" y="306" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1033.5" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1033.5" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1022.5" y="337.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1017" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1017" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="1045.6" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1051.1" y="321.95" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1062.1" y="311.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1062.1" y="324.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="36" y="374" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-05"><rect x="52" y="390" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-05.png" x="52" y="390" width="228" height="228" clip-path="url(#mask-option-05)"/>
+        <g><rect x="146.5" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="157.5" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="157.5" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="146.5" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="141" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="141" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="175.1" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="169.6" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="175.1" y="659.95" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="186.1" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="175.1" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="328" y="374" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-06"><rect x="344" y="390" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-06.png" x="344" y="390" width="228" height="228" clip-path="url(#mask-option-06)"/>
+        <g><rect x="438.5" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="449.5" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="449.5" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="438.5" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="433" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="433" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="467.1" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="461.6" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="467.1" y="659.95" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="461.6" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="478.1" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="467.1" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="620" y="374" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-07"><rect x="636" y="390" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-07.png" x="636" y="390" width="228" height="228" clip-path="url(#mask-option-07)"/>
+        <g><rect x="730.5" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="741.5" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="741.5" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="730.5" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="725" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="725" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="759.1" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="770.1" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="770.1" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+      </g>
+
+      <g>
+        <rect x="912" y="374" width="260" height="260" rx="44" fill="#f4f4f1"/>
+        <clipPath id="mask-option-08"><rect x="928" y="390" width="228" height="228" rx="38"/></clipPath>
+        <image href="option-08.png" x="928" y="390" width="228" height="228" clip-path="url(#mask-option-08)"/>
+        <g><rect x="1022.5" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1033.5" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1033.5" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1022.5" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1017" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1017" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/></g>
+<g><rect x="1051.1" y="644" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1062.1" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1062.1" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1051.1" y="675.9" width="11" height="5.5" rx="2.75" fill="#171717"/><rect x="1045.6" y="662.7" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1045.6" y="649.5" width="5.5" height="13.200000000000003" rx="2.75" fill="#171717"/><rect x="1051.1" y="659.95" width="11" height="5.5" rx="2.75" fill="#171717"/></g>
+      </g>
+</svg>

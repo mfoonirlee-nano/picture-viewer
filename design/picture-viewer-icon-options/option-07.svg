@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="option-07-title">
+  <title id="option-07-title">Picture Viewer icon option 07 - contain crop</title>
+  <defs>
+    <linearGradient id="option-07-bg" x1="14.6447%" y1="14.6447%" x2="85.3553%" y2="85.3553%">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <filter id="option-07-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="25.6" stdDeviation="17.92" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#option-07-bg)"/>
+  <g filter="url(#option-07-shadow)">
+    <path transform="translate(512 512) rotate(0) scale(30) translate(-12 -12)" d="M7 2h2v4h8c.55 0 1 .45 1 1v8h4v2h-4v5h-2v-5H7c-.55 0-1-.45-1-1V8H2V6h4V2h1zm1 6v7h8V8H8zm2 5h5l-1.6-2.15-1.2 1.55-.9-1.2L10 13z" fill="#111827"/>
+  </g>
+</svg>

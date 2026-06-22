@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="option-04-title">
+  <title id="option-04-title">Picture Viewer icon option 04 - slideshow</title>
+  <defs>
+    <linearGradient id="option-04-bg" x1="14.6447%" y1="14.6447%" x2="85.3553%" y2="85.3553%">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </linearGradient>
+    <filter id="option-04-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="25.6" stdDeviation="17.92" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#option-04-bg)"/>
+  <g filter="url(#option-04-shadow)">
+    <path transform="translate(512 512) rotate(0) scale(30) translate(-12 -12)" d="M3 5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5zm7 3.5v5l4.5-2.5L10 8.5zM6 21h12v2H6v-2z" fill="#ffffff"/>
+  </g>
+</svg>

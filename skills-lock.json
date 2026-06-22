@@ -6,6 +6,12 @@
       "sourceType": "github",
       "skillPath": "skills/brand-to-design-md/SKILL.md",
       "computedHash": "d7c4570be54bca399c7dfb2fcd9e61ea65b4be38267212652d456b788b33ef60"
+    },
+    "qiaomu-icon-generator": {
+      "source": "joeseesun/qiaomu-icon-generator",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "6c24f6cd0903d583fdd4615880dcd687df091693b9be3396c30f2a94e893169d"
     }
   }
 }

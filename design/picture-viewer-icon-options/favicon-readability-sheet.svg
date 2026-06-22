@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1016" height="320" viewBox="0 0 1016 320">
+  <rect width="1016" height="320" fill="#ffffff"/>
+  
+      <g><rect x="46" y="78" width="12" height="6" rx="3" fill="#171717"/><rect x="40" y="84" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="46" y="95.4" width="12" height="6" rx="3" fill="#171717"/><rect x="40" y="98.4" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="58" y="98.4" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="46" y="112.8" width="12" height="6" rx="3" fill="#171717"/></g>
+<g><rect x="71.2" y="84" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="77.2" y="95.4" width="12" height="6" rx="3" fill="#171717"/><rect x="89.2" y="84" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="89.2" y="98.4" width="6" height="14.399999999999999" rx="3" fill="#171717"/></g>
+      <image href="option-01.png" x="177" y="68" width="64" height="64"/>
+<image href="option-02.png" x="281" y="68" width="64" height="64"/>
+<image href="option-03.png" x="385" y="68" width="64" height="64"/>
+<image href="option-04.png" x="489" y="68" width="64" height="64"/>
+<image href="option-05.png" x="593" y="68" width="64" height="64"/>
+<image href="option-06.png" x="697" y="68" width="64" height="64"/>
+<image href="option-07.png" x="801" y="68" width="64" height="64"/>
+<image href="option-08.png" x="905" y="68" width="64" height="64"/>
+
+      <g><rect x="46" y="198" width="12" height="6" rx="3" fill="#171717"/><rect x="58" y="204" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="46" y="215.4" width="12" height="6" rx="3" fill="#171717"/><rect x="58" y="218.4" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="46" y="232.8" width="12" height="6" rx="3" fill="#171717"/></g>
+<g><rect x="77.2" y="198" width="12" height="6" rx="3" fill="#171717"/><rect x="89.2" y="204" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="77.2" y="215.4" width="12" height="6" rx="3" fill="#171717"/><rect x="71.2" y="218.4" width="6" height="14.399999999999999" rx="3" fill="#171717"/><rect x="77.2" y="232.8" width="12" height="6" rx="3" fill="#171717"/></g>
+      <image href="option-01.png" x="193" y="204" width="32" height="32"/>
+<image href="option-02.png" x="297" y="204" width="32" height="32"/>
+<image href="option-03.png" x="401" y="204" width="32" height="32"/>
+<image href="option-04.png" x="505" y="204" width="32" height="32"/>
+<image href="option-05.png" x="609" y="204" width="32" height="32"/>
+<image href="option-06.png" x="713" y="204" width="32" height="32"/>
+<image href="option-07.png" x="817" y="204" width="32" height="32"/>
+<image href="option-08.png" x="921" y="204" width="32" height="32"/>
+</svg>

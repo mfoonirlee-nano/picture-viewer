@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="option-06-title">
+  <title id="option-06-title">Picture Viewer icon option 06 - gallery grid</title>
+  <defs>
+    <linearGradient id="option-06-bg" x1="14.6447%" y1="14.6447%" x2="85.3553%" y2="85.3553%">
+      <stop offset="0" stop-color="#7c2d12"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="option-06-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="25.6" stdDeviation="17.92" flood-color="#0f172a" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#option-06-bg)"/>
+  <g filter="url(#option-06-shadow)">
+    <path transform="translate(512 512) rotate(0) scale(30) translate(-12 -12)" d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h8v8h-8v-8zm2 2v4h4v-4h-4z" fill="#fff7ed"/>
+  </g>
+</svg>
