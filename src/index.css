@@ -81,9 +81,6 @@ body {
 .image-stage {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 0;
   background:
     linear-gradient(45deg, #111 25%, transparent 25%),
     linear-gradient(-45deg, #111 25%, transparent 25%),
@@ -95,6 +92,8 @@ body {
 }
 
 .viewer-image {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
