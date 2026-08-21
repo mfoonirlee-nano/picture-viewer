@@ -25,6 +25,19 @@
   --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.06), 0 12px 28px -18px rgba(0, 0, 0, 0.42);
   --chrome-shift: 10px;
   --chrome-transition: opacity 180ms ease, transform 180ms ease;
+  /* 流式控件尺寸：小屏保底、大屏按视口温和放大 */
+  --chrome-inset: clamp(8px, 0.8vw, 24px);
+  --chrome-gap: clamp(10px, 0.9vw, 28px);
+  --overlay-pad: clamp(6px, 0.3vw, 10px);
+  --strip-gap: clamp(6px, 0.35vw, 10px);
+  --bar-h: clamp(34px, 1.15vw + 15px, 52px);
+  --meta-h: clamp(30px, 1vw + 14px, 46px);
+  --font-ui: clamp(13px, 0.4vw + 7.7px, 17px);
+  --font-meta: clamp(12px, 0.35vw + 6.8px, 15px);
+  --icon: clamp(18px, 0.45vw + 10.2px, 26px);
+  --icon-sm: clamp(15px, 0.4vw + 8.7px, 21px);
+  --input-w: clamp(52px, 3vw, 84px);
+  --meta-max: clamp(720px, 44vw, 1080px);
   color-scheme: light;
 }
 
@@ -45,8 +58,8 @@ body {
 }
 
 .icon {
-  width: 18px;
-  height: 18px;
+  width: var(--icon);
+  height: var(--icon);
   flex: 0 0 auto;
 }
 
@@ -83,8 +96,8 @@ body {
 
 .viewer-image {
   display: block;
-  width: 100dvw;
-  height: 100dvh;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: center;
   user-select: none;
@@ -102,13 +115,13 @@ body {
 .top-overlay {
   position: absolute;
   z-index: 10;
-  top: 12px;
-  right: 12px;
-  left: 12px;
+  top: max(var(--chrome-inset), env(safe-area-inset-top));
+  right: max(var(--chrome-inset), env(safe-area-inset-right));
+  left: max(var(--chrome-inset), env(safe-area-inset-left));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--chrome-gap);
   pointer-events: none;
   transform: translateY(0);
   transition: var(--chrome-transition);
@@ -121,8 +134,11 @@ body {
 .file-meta {
   display: inline-flex;
   min-width: 0;
-  max-width: min(720px, calc(100vw - 156px));
-  height: 32px;
+  max-width: min(
+    var(--meta-max),
+    calc(100vw - (2 * var(--chrome-inset)) - var(--meta-h) - var(--chrome-gap) - 16px)
+  );
+  height: var(--meta-h);
   align-items: center;
   gap: 8px;
   border: 0;
@@ -130,30 +146,30 @@ body {
   background: rgba(16, 16, 16, 0.46);
   color: var(--geist-background-100);
   box-shadow: none;
-  padding: 0 10px;
+  padding: 0 clamp(10px, 0.6vw, 16px);
 }
 
 .file-meta span {
   color: rgba(255, 255, 255, 0.72);
   font-family: "Geist Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-meta);
+  line-height: 1.35;
   white-space: nowrap;
 }
 
 .file-meta strong {
   overflow: hidden;
   color: rgba(255, 255, 255, 0.9);
-  font-size: 12px;
+  font-size: var(--font-meta);
   font-weight: 500;
-  line-height: 16px;
+  line-height: 1.35;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .top-overlay .ghost-button {
-  width: 32px;
-  height: 32px;
+  width: var(--meta-h);
+  height: var(--meta-h);
   border: 0;
   background: rgba(16, 16, 16, 0.46);
   color: var(--geist-background-100);
@@ -169,16 +185,16 @@ body {
   position: absolute;
   z-index: 10;
   right: 50%;
-  bottom: 16px;
+  bottom: max(var(--chrome-inset), env(safe-area-inset-bottom));
   display: flex;
-  max-width: calc(100vw - 24px);
+  max-width: calc(100vw - (2 * var(--chrome-inset)));
   align-items: center;
-  gap: 6px;
+  gap: var(--strip-gap);
   border: 1px solid var(--glass-border);
   border-radius: var(--geist-radius-sm);
   background: rgba(255, 255, 255, 0.36);
   box-shadow: var(--glass-shadow);
-  padding: 6px;
+  padding: var(--overlay-pad);
   transform: translateX(50%) translateY(0);
   transition: var(--chrome-transition);
 }
@@ -186,7 +202,7 @@ body {
 .control-strip {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--strip-gap);
 }
 
 .primary-button,
@@ -194,14 +210,14 @@ body {
 .action-button,
 .icon-button {
   display: inline-flex;
-  height: 34px;
+  height: var(--bar-h);
   align-items: center;
   justify-content: center;
   gap: 8px;
   border-radius: var(--geist-radius-sm);
-  font-size: 13px;
+  font-size: var(--font-ui);
   font-weight: 500;
-  line-height: 18px;
+  line-height: 1.4;
   transition:
     background-color 150ms cubic-bezier(0.175, 0.885, 0.32, 1.1),
     border-color 150ms cubic-bezier(0.175, 0.885, 0.32, 1.1),
@@ -228,17 +244,17 @@ body {
 
 .action-button,
 .ghost-button {
-  width: 34px;
+  width: var(--bar-h);
   padding: 0;
 }
 
 .icon-button {
-  width: 34px;
+  width: var(--bar-h);
   padding: 0;
 }
 
 .primary-button {
-  padding: 0 12px;
+  padding: 0 clamp(12px, 1vw, 20px);
 }
 
 .primary-button:hover:not(:disabled),
@@ -263,20 +279,20 @@ body {
 
 .interval-control {
   display: grid;
-  height: 34px;
-  grid-template-columns: auto 52px auto;
+  height: var(--bar-h);
+  grid-template-columns: auto var(--input-w) auto;
   align-items: center;
-  gap: 6px;
+  gap: var(--strip-gap);
   border: 1px solid var(--glass-border);
   border-radius: var(--geist-radius-sm);
   background: var(--glass-bg-strong);
   color: var(--geist-gray-900);
-  padding: 0 10px;
+  padding: 0 clamp(10px, 0.6vw, 16px);
 }
 
 .interval-control .icon {
-  width: 15px;
-  height: 15px;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
 }
 
 .interval-control input {
@@ -285,15 +301,15 @@ body {
   background: transparent;
   color: var(--geist-primary);
   font-family: "Geist Mono", "SFMono-Regular", Consolas, monospace;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-meta);
+  line-height: 1.35;
   text-align: right;
 }
 
 .interval-control span {
   color: var(--geist-gray-700);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--font-meta);
+  line-height: 1.35;
 }
 
 .progress-track {
@@ -335,7 +351,7 @@ body {
   min-height: 100dvh;
   place-items: center;
   background: var(--geist-background-200);
-  padding: 24px;
+  padding: clamp(24px, 4vw, 48px);
 }
 
 .empty-panel {
@@ -393,22 +409,17 @@ body {
 
 @media (max-width: 720px) {
   .top-overlay {
-    top: 8px;
-    right: 8px;
-    left: 8px;
+    top: max(8px, env(safe-area-inset-top));
+    right: max(8px, env(safe-area-inset-right));
+    left: max(8px, env(safe-area-inset-left));
   }
 
   .file-meta {
-    max-width: calc(100vw - 112px);
-  }
-
-  .ghost-button {
-    width: 34px;
-    padding: 0;
+    max-width: calc(100vw - 64px - env(safe-area-inset-left) - env(safe-area-inset-right));
   }
 
   .bottom-overlay {
-    bottom: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
     display: grid;
     width: calc(100vw - 16px);
     grid-template-columns: 1fr;
@@ -416,11 +427,33 @@ body {
 
   .control-strip {
     display: grid;
-    grid-template-columns: 34px 1fr 34px;
+    grid-template-columns: var(--bar-h) 1fr var(--bar-h);
   }
 
   .interval-control {
     grid-template-columns: auto minmax(72px, 1fr) auto;
+  }
+}
+
+/* 矮视口（横屏手机、分屏）：收窄边距，避免控件挤压画面 */
+@media (max-height: 520px) {
+  :root {
+    --chrome-inset: 8px;
+    --overlay-pad: 4px;
+  }
+
+  .top-overlay {
+    top: max(8px, env(safe-area-inset-top));
+    right: max(8px, env(safe-area-inset-right));
+    left: max(8px, env(safe-area-inset-left));
+  }
+
+  .bottom-overlay {
+    bottom: max(8px, env(safe-area-inset-bottom));
+  }
+
+  .progress-track {
+    height: 2px;
   }
 }
 
